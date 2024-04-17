@@ -9,18 +9,18 @@ L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
   attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 }).addTo(myMap);
 
-// GeoJSON URL
+// Load and add earthquake data
 var geojsonURL = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/significant_month.geojson";
 
 // Fetch the earthquake data from the GeoJSON URL using D3
 d3.json(geojsonURL).then(function(data) {
 
-    // Function to determine marker size based on earthquake magnitude
+    // Adjust marker size based on magnitude
     function markerSize(magnitude) {
         return magnitude * 5;
     }
 
-    // Function to determine marker color based on earthquake depth
+    // Adjust marker color based on depth
     function markerColor(depth) {
         if (depth > 300) {
             return "#FF4500";
@@ -49,7 +49,7 @@ d3.json(geojsonURL).then(function(data) {
         }
     }).addTo(myMap);
 
-    // Legend
+    // Create a legend
     var legend = L.control({ position: "bottomright" });
 
     legend.onAdd = function() {
@@ -57,7 +57,7 @@ d3.json(geojsonURL).then(function(data) {
             depths = [0, 100, 200, 300],
             labels = [];
 
-        // Loop through the depth intervals and generate a label with a colored square for each interval
+        // Loop through the depths and add legend items
         for (var i = 0; i < depths.length; i++) {
             div.innerHTML +=
                 '<i style="background:' + markerColor(depths[i] + 1) + '"></i> ' +
